@@ -7,10 +7,12 @@ class School(models.Model):
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=20)
-    pub_date = models.DateTimeField('date published')
     email = models.EmailField('email')
+    
+    def __str__(self):
+        return self.name 
 
-class Person(models.Model):
+class Student(models.Model):
     male = 'M'
     female = 'F'
     
@@ -23,9 +25,10 @@ class Person(models.Model):
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     nationalid = models.CharField(max_length=30)
-    phone = models.CharField(max_length=20)
-    email  = models.EmailField('email')
+    phone = models.CharField(max_length=20, blank=True)
+    email  = models.EmailField('e-mail', blank=True)
     address = models.CharField(max_length=200)
+    school_id = models.ForeignKey(School, on_delete=models.CASCADE, verbose_name ='School Name')
     
     gender = models.CharField(
         max_length=1,
@@ -34,19 +37,31 @@ class Person(models.Model):
     )
     dob = models.DateTimeField('date of birth')
 
-class Student(models.Model):
-    person_id = models.ForeignKey(Person, on_delete=models.CASCADE)
-    school_id = models.ForeignKey(School, on_delete=models.CASCADE)
 
 
 class Legal_Rep(models.Model):
-    person_id = models.ForeignKey(Person, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
 
 
 class Payment(models.Model):
+    
+    cash = 'C'
+    electronic = 'E'
+    
+    payment_method = (
+                     (cash, 'cash'),
+                     (electronic, 'electronic'),
+                     )
+    
     value = models.IntegerField(default=0)
     currency = models.CharField(max_length=10)
+    
+    method = models.CharField(
+        max_length=1,
+        choices=payment_method,
+        default=cash,
+    )
+    
     payment_made = models.DateTimeField('date when payment made to legal rep')
     
 class Attendance(models.Model):

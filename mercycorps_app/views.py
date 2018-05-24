@@ -2,17 +2,18 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from .forms import PersonForm
+from .forms import StudentForm
+from .forms import SchoolForm
 
 def home(request):
 
     return HttpResponse("Hello, MercyCorps app <br> Add Student")
 
 def add_student(request):
-    print("add_student called")
+
     if request.method == 'POST':
         
-        form = PersonForm(request.POST)
+        form = StudentForm(request.POST)
         
         if form.is_valid():
             # process the data in form.cleaned_data as required
@@ -20,12 +21,41 @@ def add_student(request):
             # redirect to a new URL:
             
             if form.is_duplicate_record() == False:
-                print('duplicate record')
-            
-            return HttpResponseRedirect('/thanks/')
+                form.save()
+                
+                return HttpResponseRedirect('/thanks/')
+        
+            else:
+                return render(request, 'mercycorps_app/addstudent.html', {'form': form})
 
         
     else:
-        form = PersonForm()
+        form = StudentForm()
         
     return render(request, 'mercycorps_app/addstudent.html', {'form': form})
+
+
+def add_school(request):
+    
+    if request.method == 'POST':
+        
+        form = SchoolForm(request.POST)
+        
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ..
+            # redirect to a new URL:
+            
+            if form.is_duplicate_record() == False:
+                form.save()
+                
+                return HttpResponseRedirect('/thanks/')
+        
+            else:
+                return render(request, 'mercycorps_app/addschool.html', {'form': form})
+
+        
+    else:
+        form = SchoolForm()
+        
+    return render(request, 'mercycorps_app/addschool.html', {'form': form})
