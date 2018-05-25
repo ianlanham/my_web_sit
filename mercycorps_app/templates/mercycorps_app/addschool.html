@@ -1,3 +1,6 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
 <form method="post" novalidate>
   {% csrf_token %}
   <table border="1">
@@ -5,4 +8,4 @@
   </table>
   <button type="submit">Submit</button>
 </form>
-
+{% endblock %}

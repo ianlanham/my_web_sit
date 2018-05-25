@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>Mercy Corps</title>{% endblock %}
+</head>
+
+
+<body>
+<h1>Mercy Corps Home</h1>
+       {% block sidebar %}
+      <ul class="sidebar-nav">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'add_student' %}">Add New Students</a></li>
+          <li><a href="{% url 'add_school' %}">Add New School</a></li>
+          <li><a href="{% url 'attendance' %}">Enter Attendance for school</a></li>
+      </ul>
+      {% endblock %}
+      
+  {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+</body>
+</html>

@@ -6,8 +6,8 @@ class School(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
-    phone = models.CharField(max_length=20)
-    email = models.EmailField('email')
+    phone = models.CharField(max_length=20,  blank=True)
+    email = models.EmailField('email',  blank=True)
     
     def __str__(self):
         return self.name 
@@ -37,7 +37,9 @@ class Student(models.Model):
     )
     dob = models.DateTimeField('date of birth')
 
-
+    def __str__(self):
+        name = '%s %s' % (self.lastname, self.firstname)
+        return name
 
 class Legal_Rep(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -65,7 +67,7 @@ class Payment(models.Model):
     payment_made = models.DateTimeField('date when payment made to legal rep')
     
 class Attendance(models.Model):
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    start_lessons = models.DateTimeField('date/time started lessions')
-    finish_lessions = models.DateTimeField('date/time finished lessions')
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name ='Student Name')
+    start_lessons = models.DateTimeField('date/time started lessions', blank=True)
+    finish_lessions = models.DateTimeField('date/time finished lessions', blank=True)
      

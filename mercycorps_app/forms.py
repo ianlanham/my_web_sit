@@ -1,8 +1,8 @@
 from django import forms
 
 
-from .models import Student
-from .models import School
+from .models import Student, Attendance, School
+
 
 class StudentForm(forms.ModelForm):
     
@@ -10,12 +10,7 @@ class StudentForm(forms.ModelForm):
         model = Student
         fields = ('firstname', 'lastname', 'address', 'nationalid', 'phone', 'email', 'dob','school_id',)
 
-    def rfeformfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "school_id":
-            kwargs["queryset"] = School.objects.filter(name__isnull=False)
-            
-            
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
         
     def is_duplicate_record(self):
         
@@ -55,3 +50,20 @@ class SchoolForm(forms.ModelForm):
         
         return is_duplicate
     
+
+
+class AttendanceForm(forms.ModelForm):
+    
+
+    
+    date = forms.DateField(widget=forms.widgets.SelectDateWidget)
+    
+    start_time = forms.TimeField(widget = forms.widgets.TimeInput)
+    
+    #end_time = forms.widgets.DateTime()
+    
+    class Meta:
+        model = Attendance
+        
+        fields = ('student_id',)
+
